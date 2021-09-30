@@ -1,0 +1,67 @@
+/* Python Code for boolean button in settings */
+
+_inherit = 'res.config.settings'
+module_sale_product_toggle = fields.Boolean("Sales Product Entry")
+default_sale_order_template_id = fields.Many2one('sale.order.line', string='Sale Order Line')
+
+
+------------------------------------------------------------------------------------------------------------------------
+/* XML Code for for boolean button in settings */
+
+<record id="res_config_settings_view_form1" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form1.inherit.sale</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="10"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="col-12 col-lg-6 o_setting_box">
+                <div class="o_setting_left_pane">
+                <field name="module_sale_product_toggle"/>
+                </div>
+                <div class="o_setting_right_pane">
+                   <label for="module_sale_product_toggle" string="Variant Grid Entry"/>
+                   <div class="text-muted">
+                     Check for product_product and Uncheck for product_template
+                    </div>
+                </div>
+                </div>
+            </xpath>
+        </field>
+</record>
+
+------------------------------------------------------------------------------------------------------------------------
+
+/* Python Code to create relation between sale_order_line and res_config_settings */
+
+_inherit = 'sale.order.line'
+sale_product_toggle = fields.Boolean(compute="_compute_description")
+res_config_settings_id = fields.Many2one("res.partner")
+product_template_id = fields.Many2one('product.template')
+
+@api.depends("res_config_settings_id.module_sale_product_toggle")
+def _compute_boolean_value(self):
+    for record in self:
+        record.sale_product_toggle = record.res_config_settings_id.module_sale_product_toggle
+
+------------------------------------------------------------------------------------------------------------------------
+
+/* XML code */
+
+<field name = 'product_template_id' attrs="{'invisible': [('sale_product_toggle', '=', False)]}"/>
+<field name = 'product_id' attrs="{'invisible': [('sale_product_toggle', '=', True)]}"/>
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+

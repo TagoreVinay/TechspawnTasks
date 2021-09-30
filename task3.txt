@@ -1,0 +1,23 @@
+/* Creating widget like monetary */
+
+/* new JS file */
+odoo.define('website_sale.dup_monetory', function (require) {
+"use strict";
+var fieldRegistry = require('web.field_registry');
+var basic_fields = require('web.basic_fields')
+
+/* As the fuctionality of new widget is similar to existing FieldMonetary */
+
+fieldRegistry.add('dollor_sign', basic_fields.FieldMonetary);
+
+/* thus new widget is added to registry*/
+});
+
+
+/* XML File */
+
+<template id="assets_backend" name="web_grid assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="path_to_js_file"></script>
+            </xpath>
+</xml>
